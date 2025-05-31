@@ -1,7 +1,7 @@
 langflow==1.4.2
 fastapi==0.95.0
 uvicorn[standard]==0.23.1
-selenium==4.33.0
+selenium==4.32.0
 webdriver-manager==3.8.5
 Pillow==11.2.1
 requests==2.32.3
