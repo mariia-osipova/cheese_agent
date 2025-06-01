@@ -8,7 +8,7 @@ const port = process.env.PORT || 4000;
 app.use(
     '/api/v1/run',
     createProxyMiddleware({
-        target: 'https://cheese-agent.onrender.com:10000',
+        target: 'https://cheese-agent.onrender.com',
         changeOrigin: true,
         pathRewrite: {
             '^/api/v1/run': '/api/v1/run'
