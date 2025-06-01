@@ -1,0 +1,31 @@
+# ---- 1. Базовый образ: легковесный Python 3.11
+FROM python:3.11-slim
+
+# ---- 2. Системные пакеты (нужны для некоторых зависимостей langflow)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+      build-essential \
+      ca-certificates \
+      git \
+    && rm -rf /var/lib/apt/lists/*
+
+# ---- 3. Рабочая директория внутри контейнера
+WORKDIR /app
+
+# ---- 4. Копируем скрипт запуска (он лежит в docs/start.sh относительно корня)
+COPY docs/start.sh /app/start.sh
+
+# Делаем start.sh исполняемым
+RUN chmod +x /app/start.sh
+
+# ---- 5. Устанавливаем pip и langflow без зависимостей, затем явно FastAPI 0.115.12 и Uvicorn 0.30.0
+RUN python -m pip install --upgrade pip && \
+    python -m pip install --no-deps "langflow==1.4.2" && \
+    python -m pip install "fastapi==0.115.12" "uvicorn==0.30.0"
+
+# ---- 6. Декларируем порт 8000 (Langflow будет слушать его)
+EXPOSE 8000
+
+# ---- 7. При старте контейнера выполняем start.sh
+CMD ["bash", "-lc", "./start.sh"]
+
